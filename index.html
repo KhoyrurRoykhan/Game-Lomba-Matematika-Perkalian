@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Olimpiade Perkalian: Battle of Math Teams</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;background:radial-gradient(circle at 20% 0,#1d3f9a,#0b1d4d 60%) fixed;color:#fff;min-height:100vh;overflow-x:hidden}
+button{font:inherit;font-weight:800;border:0;border-radius:16px;padding:12px 20px;cursor:pointer;color:#fff;background:#ff7a1a;box-shadow:0 5px 0 rgba(0,0,0,.3);margin:5px}
+button:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.3)}
+button.g{background:#22b573}button.b{background:#2f7bff}button.s{background:#5b6b9a}button.r{background:#e5484d}button:disabled{opacity:.5;cursor:not-allowed}
+button.big{font-size:clamp(18px,2.2vw,30px);padding:16px 30px}
+header{position:fixed;top:0;left:0;right:0;height:56px;background:#071440;display:flex;justify-content:space-between;align-items:center;padding:0 12px;z-index:20;font-size:20px;font-weight:800}
+header button{padding:6px 12px;margin:2px;box-shadow:none;background:#26418f}
+#app{padding:70px 16px 30px}
+.c{max-width:1250px;margin:auto;text-align:center;position:relative}
+h1{font-size:clamp(34px,6vw,76px);margin:.2em 0;color:#ffd93d;text-shadow:0 4px 0 #b36b00}
+h2{margin:.2em 0}.lead{font-size:clamp(18px,2vw,28px)}
+.trophy{font-size:clamp(70px,11vw,140px);animation:bob 2s infinite}
+@keyframes bob{50%{transform:translateY(-14px) rotate(4deg)}}
+.teams{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:18px 0}
+.tc{background:var(--c);border-radius:22px;padding:14px;box-shadow:0 6px 0 rgba(0,0,0,.3);text-align:center}
+.tc .em{font-size:56px}.tc b{font-size:22px;display:block}.tc ol{text-align:left;padding-left:24px;margin:8px 0;font-size:15px}
+.fl{position:fixed;inset:0;pointer-events:none;z-index:0}
+.fl span{position:absolute;bottom:-40px;font-size:34px;opacity:.5;animation:up 9s linear infinite}
+@keyframes up{to{transform:translateY(-110vh) rotate(30deg)}}
+.c>*{position:relative;z-index:1}
+textarea{width:100%;height:230px;border-radius:14px;border:0;padding:12px;font:inherit;font-size:16px}
+.badge{display:inline-block;background:#ff7a1a;padding:6px 20px;border-radius:30px;font-weight:800;font-size:22px}
+.info{font-size:22px;margin:10px}
+.order{max-height:300px;overflow:auto;background:#0006;border-radius:14px;padding:8px;margin:10px auto;max-width:700px}
+.or{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:4px 10px;border-bottom:1px solid #fff2;text-align:left}
+.mini{padding:2px 8px;margin:0;font-size:12px;background:#26418f;box-shadow:none}
+.who{display:flex;align-items:center;gap:14px;background:var(--c);border-radius:20px;padding:10px 20px;text-align:left;box-shadow:0 5px 0 #0004}
+.who .em{font-size:50px}.who small{display:block;font-size:16px}.who b{font-size:30px}.who select{font:inherit;font-size:24px;font-weight:800;padding:4px;border-radius:10px}
+.who .pts{margin-left:auto;font-size:28px;font-weight:800}
+.stage{position:relative;padding:10px}
+.q{font-size:clamp(64px,13vw,170px);font-weight:900;margin:.1em 0;text-shadow:0 6px 0 #0006}
+.cdn{font-size:clamp(120px,22vw,260px);color:#ffd93d;animation:pop .7s infinite}
+@keyframes pop{0%{transform:scale(.4)}60%{transform:scale(1.15)}}
+.tm{height:22px;background:#0006;border-radius:12px;overflow:hidden;max-width:800px;margin:auto}
+.tm div{height:100%;background:#22b573;transition:width .1s linear}.tm div.w{background:#e5484d}
+.tt{font-size:46px;font-weight:900}
+.ans{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:900px;margin:14px auto}
+.ans button{font-size:clamp(34px,5vw,64px);padding:22px;border-radius:24px}
+.o0{background:#e5484d}.o1{background:#2f7bff}.o2{background:#22b573}.o3{background:#9b5de5}
+.ans button.ok{background:#22b573;outline:6px solid #ffd93d;opacity:1}.ans button.bad{background:#555}.ans button.dim{opacity:.35}
+.num input{font:inherit;font-size:60px;width:260px;text-align:center;border-radius:18px;border:0;padding:8px}
+.res{max-width:900px;margin:12px auto;padding:14px;border-radius:20px;font-size:24px}
+.res.good{background:#22b57355;animation:pop2 .5s}.res.bad{background:#ff7a1a44;animation:wob .6s}
+.res .big2{font-size:40px;font-weight:900}.ex{background:#0005;border-radius:12px;padding:10px;margin:8px 0;font-size:24px}
+@keyframes pop2{0%{transform:scale(.7)}}@keyframes wob{25%{transform:rotate(-2deg)}75%{transform:rotate(2deg)}}
+.pause{position:absolute;inset:0;background:#000b;display:flex;align-items:center;justify-content:center;font-size:80px;font-weight:900;border-radius:20px;z-index:5}
+.key{position:absolute;right:6px;top:6px;background:#ffd93d;color:#000;padding:4px 12px;border-radius:10px;font-weight:800}
+.mas{display:flex;align-items:center;gap:10px;justify-content:center;font-size:22px;margin:6px}.mas span{font-size:50px}.mas div{background:#fff;color:#123;padding:8px 16px;border-radius:18px}
+.strip{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.chip{background:var(--c);border-radius:16px;padding:6px 16px;font-size:24px;display:flex;gap:8px;align-items:center}.chip b{font-size:28px}
+.ovl{position:fixed;inset:0;background:#050c28f2;overflow:auto;padding:64px 16px 30px;z-index:30}
+.ovl .x{position:fixed;top:12px;right:12px;z-index:31}
+.rkw{position:relative;max-width:900px;margin:20px auto}
+.rk{position:absolute;left:0;right:0;height:86px;background:var(--c);border-radius:20px;display:flex;align-items:center;gap:14px;padding:0 20px;transition:top .9s;text-align:left}
+.rk.top{outline:5px solid #ffd93d;box-shadow:0 0 30px #ffd93d}
+.rk .n{font-size:38px;font-weight:900;width:40px}.rk .em{font-size:44px}.rk .nm{flex:1}.rk b{font-size:26px;display:block}.rk small{font-size:14px}.rk .p{font-size:40px;font-weight:900}
+.ind{max-width:800px;margin:16px auto;text-align:left}.ir{display:flex;justify-content:space-between;gap:10px;padding:8px 14px;margin:5px 0;border-left:8px solid;background:#16306e;border-radius:10px}
+.dr{position:fixed;right:0;top:56px;bottom:0;width:290px;background:#0a2160;transform:translateX(105%);transition:.25s;z-index:25;padding:10px;overflow:auto;text-align:center}
+.dr.o{transform:none}.dr button{width:100%;margin:5px 0}
+#fx,#cf{position:fixed;inset:0;pointer-events:none;z-index:40}
+.st{position:absolute;bottom:20%;font-size:44px;animation:fly 1.6s ease-out forwards}
+@keyframes fly{to{transform:translateY(-60vh) rotate(200deg);opacity:0}}
+.help{text-align:left;max-width:800px;margin:auto;font-size:18px;line-height:1.5}
+</style></head><body>
+<header><span>🏆 Olimpiade Perkalian</span><span><button onclick="go2('home')">🏠</button><button onclick="ov('rank')">📊</button><button onclick="ov('peserta')">👥</button><button id="bm" onclick="tm()">🎵</button><button id="bs" onclick="ts()">🔊</button><button onclick="dr()">⚙️</button><button onclick="ov('help')">❓</button></span></header>
+<div class="fl" id="fl"></div><div id="app"></div><div class="dr" id="dr"></div><div id="ovc"></div><div id="fx"></div><canvas id="cf"></canvas>
+<script>
+const T=[{n:'Tim Merah',c:'#e5484d',e:'🦊'},{n:'Tim Biru',c:'#2f7bff',e:'🐬'},{n:'Tim Hijau',c:'#22b573',e:'🐸'},{n:'Tim Kuning',c:'#e0a800',e:'🦁'},{n:'Tim Ungu',c:'#9b5de5',e:'🦄'}];
+const RD={1:{n:'PEMANASAN',p:10,t:15,d:'Perkalian dasar. Setiap siswa mendapat satu soal.'},2:{n:'ADU CEPAT',p:15,t:20,d:'Puluhan × satuan. Setiap siswa mendapat satu soal.'},3:{n:'TANTANGAN RATUSAN',p:20,t:30,d:'Ratusan × satuan. Setiap siswa mendapat satu soal.'},4:{n:'DUEL ANTARTIM',p:20,t:25,d:'Lima tim bergantian dalam 4 putaran. Guru memilih perwakilan tim.'},5:{n:'GRAND FINAL',p:0,t:0,d:'Setiap tim mendapat 3 soal: 20, 25, dan 30 poin. Skor sebelumnya tetap dihitung!'}};
+const KEY='olimpiade-perkalian-v1',$=s=>document.querySelector(s),rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const shuf=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=rnd(0,i);[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fresh=()=>({names:[],teams:[],locked:false,screen:'home',last:'',r:0,i:0,Q:{},used:[],snd:true,mus:false,mode:'mix'});
+let S;try{S=JSON.parse(localStorage.getItem(KEY))||fresh()}catch(e){S=fresh()}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+let ph='ready',left=0,deadline=0,tmr=null,paused=false,key=false,cd=3,ls=0,msg='',OV='',RT='team',LR=[],cfd=false,mt=null,mi=0;
+const teamOf=s=>S.teams.findIndex(t=>t.includes(s)),cur=()=>(S.Q[S.r]||[])[S.i];
+const mode=()=>S.mode=='mix'?(S.r<4?'mc':'num'):S.mode;
+/* ---------- suara ---------- */
+let AC;function tone(f,d,ty='sine',dl=0,v=.15,force){if(!S.snd&&!force)return;try{AC=AC||new AudioContext();if(AC.state=='suspended')AC.resume();const o=AC.createOscillator(),g=AC.createGain();o.type=ty;o.frequency.value=f;o.connect(g);g.connect(AC.destination);const t=AC.currentTime+dl;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.start(t);o.stop(t+d)}catch(e){}}
+function sfx(k){if(k=='ok')[523,659,784,1047].forEach((f,i)=>tone(f,.25,'triangle',i*.1));else if(k=='no')[300,240].forEach((f,i)=>tone(f,.3,'sawtooth',i*.18,.07));else if(k=='tick')tone(880,.08,'square',0,.05);else if(k=='win')[523,659,784,659,784,1047,1319].forEach((f,i)=>tone(f,.3,'triangle',i*.14))}
+function music(){clearInterval(mt);mt=null;if(S.mus){const N=[523,659,784,659,587,698,880,698,523,659,784,1047,988,784,659,587];mt=setInterval(()=>tone(N[mi++%16],.22,'sine',0,.04,true),260)}}
+const tm=()=>{S.mus=!S.mus;music();save();render()},ts=()=>{S.snd=!S.snd;save();render()};
+function stars(t){const l=$('#fx');for(let i=0;i<14;i++){const s=document.createElement('div');s.className='st';s.textContent=i==0&&t?t:'⭐';s.style.left=rnd(8,90)+'%';s.style.animationDelay=Math.random()*.4+'s';l.appendChild(s);setTimeout(()=>s.remove(),2200)}}
+function confetti(n=180){const c=$('#cf'),x=c.getContext('2d');c.width=innerWidth;c.height=innerHeight;const P=Array.from({length:n},()=>({x:Math.random()*c.width,y:-Math.random()*c.height*.6,v:2+Math.random()*4,w:6+Math.random()*8,r:Math.random()*6,s:(Math.random()-.5)*4,c:`hsl(${Math.random()*360},90%,60%)`}));let f=0;(function a(){x.clearRect(0,0,c.width,c.height);P.forEach(p=>{p.y+=p.v;p.x+=p.s;p.r+=.1;x.fillStyle=p.c;x.save();x.translate(p.x,p.y);x.rotate(p.r);x.fillRect(-p.w/2,-p.w/4,p.w,p.w/2);x.restore()});if(++f<320)requestAnimationFrame(a);else x.clearRect(0,0,c.width,c.height)})()}
+/* ---------- soal ---------- */
+const carry=(a,b)=>String(a).split('').some(d=>d*b>=10);
+function gen(kind,want){for(let k=0;k<500;k++){let a,b;
+ if(kind=='r1'){a=rnd(2,9);b=rnd(2,9)}
+ else if(kind=='r2'||kind=='l1'){a=rnd(12,49);b=rnd(2,kind=='r2'?4:5);if(a%10==0)continue}
+ else{b=rnd(2,kind=='l2'?3:4);a=rnd(100,kind=='l2'?333:299);if(a*b>1000||(want&&carry(a,b)!=(want=='c')))continue}
+ const key=a+'x'+b;if(k<400&&S.used.includes(key))continue;S.used.push(key);return[a,b]}return[2,3]}
+function opts(n,a,b){let c=a<10?[n+a,n-a,n+b,n-b,n+1,n-1,n+2,n-2,n+10]:[n+10,n-10,n+b,n-b,n+a,n-a,n+100,n-100,n+1,n-1,n+20,n-20];
+ const o=shuf([...new Set(c)].filter(x=>x>0&&x!=n)).slice(0,3);let k=3;while(o.length<3)o.push(n+k++);return shuf([n,...o])}
+const mk=(kind,want,pts,time,team,stu,tb)=>{const[a,b]=gen(kind,want);return{a,b,pts,time,team,stu,tb:!!tb,opts:opts(a*b,a,b),res:null}};
+function expl(a,b){const n=a*b;if(a<10)return`${a} × ${b} artinya ${Array(b).fill(a).join(' + ')} = ${n}.`;const ds=String(a).split(''),p=ds.map((d,i)=>d*10**(ds.length-1-i)).filter(x=>x);return`${a} × ${b} = ${p.map(x=>`(${x} × ${b})`).join(' + ')} = ${p.map(x=>x*b).join(' + ')} = ${n}.`}
+function build(r){let q=[];
+ if(r<4)q=shuf(S.names.map((_,i)=>i)).map((s,j)=>mk('r'+r,r==3?(j%2?'c':'n'):0,RD[r].p,RD[r].t,teamOf(s),s));
+ else if(r==4){for(let p=0;p<4;p++)for(let t=0;t<5;t++)q.push(mk(['r2','r3','l1','r3'][rnd(0,3)],rnd(0,1)?'c':'n',20,25,t,null))}
+ else[['l1',0,20,20],['l2','n',25,25],['l3','c',30,30]].forEach(l=>{for(let t=0;t<5;t++)q.push(mk(l[0],l[1],l[2],l[3],t,null))});
+ S.Q[r]=q}
+function pickRep(t){const pl=[4,5].flatMap(r=>S.Q[r]||[]).filter(x=>x.stu!=null),c=s=>pl.filter(x=>x.stu==s).length;return[...S.teams[t]].sort((a,b)=>c(a)-c(b))[0]}
+function assignRep(){const it=cur();if(it&&it.stu==null)it.stu=pickRep(it.team)}
+function stats(){const t=T.map(()=>({p:0,ok:0,n:0,h:{}})),s=S.names.map(()=>({p:0,ok:0,n:0}));
+ Object.entries(S.Q).forEach(([r,q])=>q.forEach(it=>{if(!it.res)return;const o=it.res.ok,p=o?it.pts:0,x=t[it.team];x.n++;x.ok+=o;x.p+=p;x.h[r]=(x.h[r]||0)+p;if(it.stu!=null){const y=s[it.stu];y.n++;y.ok+=o;y.p+=p}}));return{t,s}}
+/* ---------- alur permainan ---------- */
+function go2(sc){if(S.screen=='play'&&ph=='run'&&!paused){clearInterval(tmr);left=deadline-Date.now();paused=true}S.screen=sc;if(sc!='home')S.last=sc;save();render()}
+function startRound(r){S.r=r;S.i=0;if(!S.Q[r])build(r);go2('intro')}
+function ask(t,cb,one){const d=document.createElement('div');d.className='ovl';d.style.zIndex=60;d.innerHTML=`<div class="c" style="margin-top:20vh"><h2 style="font-size:34px">${t}</h2>${one?'':'<button class="s" id="nn">Batal</button>'}<button class="g big" id="yy">${one?'OK':'Ya, lanjutkan'}</button></div>`;document.body.appendChild(d);d.querySelector('#yy').onclick=()=>{d.remove();cb&&cb()};const n=d.querySelector('#nn');if(n)n.onclick=()=>d.remove()}
+function startT(){if(!S.teams.length)return go2('setup');if(!S.locked){return ask('Mulai turnamen sekarang? Komposisi tim akan dikunci.',()=>{S.locked=true;startRound(1)})}go2(S.last&&S.last!='setup'?S.last:'intro')}
+function begin(){ph='ready';key=false;assignRep();go2('play')}
+function startQ(){const it=cur();ph='count';cd=3;render();sfx('tick');const c=setInterval(()=>{cd--;if(cd>0){sfx('tick');const e=$('#cd');if(e)e.textContent=cd}else{clearInterval(c);ph='run';left=it.time*1000;ls=0;go()}},800)}
+function go(){paused=false;deadline=Date.now()+left;clearInterval(tmr);tmr=setInterval(tick,100);render()}
+function tick(){left=deadline-Date.now();if(left<=0){left=0;clearInterval(tmr);return submit(null)}const s=Math.ceil(left/1000);if(s<=5&&s!=ls){ls=s;sfx('tick')}const e=$('#tt');if(e){e.textContent=s;const b=$('#tb');b.style.width=left/(cur().time*10)+'%';b.className=left<5000?'w':''}}
+function pause(){if(ph!='run')return;if(paused)go();else{clearInterval(tmr);left=deadline-Date.now();paused=true;render()}}
+const ans=v=>{if(!paused&&ph=='run')submit(v)},sendNum=()=>{const v=$('#ai').value;if(v!=='')ans(+v)};
+function submit(a){const it=cur();if(!it||it.res||ph=='done')return;clearInterval(tmr);const ok=a!==null&&a===it.a*it.b;it.res={ans:a,ok};ph='done';paused=false;
+ msg=ok?['Hebat sekali!','Keren! Kamu pintar!','Mantap, tepat sekali!'][rnd(0,2)]:a===null?'Waktu habis, tidak apa-apa. Tetap semangat!':['Hampir! Kita belajar bersama.','Salah itu bagian dari belajar!'][rnd(0,1)];
+ save();sfx(ok?'ok':'no');render();if(ok)stars('+'+it.pts)}
+function redo(){clearInterval(tmr);const it=cur();it.res=null;ph='ready';paused=false;key=false;save();render()}
+function fix(){if(ph!='done')return;ask('Balik hasil jawaban ini (benar ↔ salah)?',()=>{const it=cur();it.res.ok=!it.res.ok;save();render()})}
+function next(){if(ph!='done')return;S.i++;ph='ready';key=false;paused=false;if(S.i>=S.Q[S.r].length)return endRound();assignRep();save();render()}
+function endRound(){if(S.r==5){const p=stats().t.map(x=>x.p),m=Math.max(...p),tied=p.map((v,i)=>v==m?i:-1).filter(i=>i>=0);
+  if(tied.length>1){tied.forEach(t=>S.Q[5].push(mk('l3','c',5,30,t,null,true)));assignRep();save();return render()}
+  return go2('final')}startRound(S.r+1)}
+function finish(){ask('Akhiri turnamen dan tampilkan juara sekarang?',()=>go2('final'))}
+function reset(){ask('Mulai sesi baru? Semua skor dan progres akan dihapus (daftar nama tetap disimpan).',()=>{clearInterval(tmr);S=Object.assign(fresh(),{names:S.names,snd:S.snd,mus:S.mus,mode:S.mode});ph='ready';save();render()})}
+/* ---------- pengaturan peserta ---------- */
+const parse=()=>$('#nm').value.split(/[\n\t]+/).map(s=>s.trim()).filter(Boolean).slice(0,50);
+function shuffleTeams(){const n=parse();if(n.length<5)return ask('Masukkan minimal 5 nama.',null,1);S.names=n;S.teams=T.map(()=>[]);shuf(n.map((_,i)=>i)).forEach((s,k)=>S.teams[k%5].push(s));S.Q={};S.used=[];save();render()}
+const demo=()=>{$('#nm').value=Array.from({length:50},(_,i)=>'Siswa '+(i+1)).join('\n');$('#cnt').textContent=50};
+function mv(i,d){const q=S.Q[S.r],j=i+d;if(j<0||j>=q.length)return;[q[i].team,q[j].team]=[q[j].team,q[i].team];[q[i].stu,q[j].stu]=[q[j].stu,q[i].stu];save();render()}
+function reorder(){const q=S.Q[S.r],p=shuf(q.map(x=>[x.team,x.stu]));q.forEach((x,i)=>{x.team=p[i][0];x.stu=p[i][1]});save();render()}
+const setRep=v=>{cur().stu=+v;save()};
+/* ---------- tampilan ---------- */
+const tgrid=()=>`<div class="teams">${T.map((t,i)=>`<div class="tc" style="--c:${t.c}"><div class="em">${t.e}</div><b>${t.n}</b><small>${(S.teams[i]||[]).length} siswa</small>${S.teams[i]?`<ol>${S.teams[i].map(s=>`<li>${esc(S.names[s])}</li>`).join('')}</ol>`:''}</div>`).join('')}</div>`;
+const board=()=>{const st=stats().t,o=T.map((_,i)=>i).sort((a,b)=>st[b].p-st[a].p||a-b);return`<div class="strip">${o.map((i,k)=>`<div class="chip" style="--c:${T[i].c}">${k==0&&st[i].p>0?'👑':''}${T[i].e}<b>${st[i].p}</b></div>`).join('')}</div>`};
+function home(){return`<div class="c"><div class="trophy">🏆</div><h1>OLIMPIADE PERKALIAN</h1><h2>Berpikir Cepat, Berhitung Tepat!</h2><p>Battle of Math Teams</p><div class="teams">${T.map(t=>`<div class="tc" style="--c:${t.c}"><div class="em">${t.e}</div><b>${t.n}</b></div>`).join('')}</div>
+<button class="g big" onclick="startT()">▶ ${S.locked?'Lanjutkan Turnamen':'Mulai Turnamen'}</button><button class="b big" onclick="ov('peserta')">👥 Lihat Peserta</button><button class="big" onclick="ov('rank')">📊 Papan Klasemen</button>${S.locked?'':'<br><button class="s" onclick="go2(\'setup\')">✏️ Atur Nama & Tim</button>'}</div>`}
+function setup(){return`<div class="c"><h1>👥 Peserta & Tim</h1><p class="lead">Ketik atau tempel daftar nama dari Excel (satu nama per baris, maksimal 50).</p><textarea id="nm" ${S.locked?'disabled':''} oninput="$('#cnt').textContent=parse().length" placeholder="Nama siswa 1&#10;Nama siswa 2&#10;...">${esc(S.names.join('\n'))}</textarea><p><b id="cnt">${S.names.length}</b> / 50 nama</p>
+${S.locked?'<b>🔒 Tim sudah dikunci. Gunakan "Sesi Baru" di Panel Guru untuk mengatur ulang.</b>':`<button class="s" onclick="demo()">📝 Isi Contoh 50 Nama</button><button class="b big" onclick="shuffleTeams()">🎲 Acak Tim</button><button class="g big" onclick="startT()" ${S.teams.length?'':'disabled'}>▶ Mulai Turnamen</button>`}${tgrid()}</div>`}
+function intro(){const r=S.r,d=RD[r],q=S.Q[r];return`<div class="c"><div class="badge">BABAK ${r}</div><h1>${d.n}</h1><p class="lead">${d.d}</p><div class="info">${r<5?`⏱ ${d.t} detik · ⭐ ${d.p} poin`:'⏱ 20–30 detik · ⭐ 20 / 25 / 30 poin'} · ${r<4?`👥 ${q.length} giliran`:`🎯 ${q.length} soal`}</div>
+${r<4?`<button class="s" onclick="reorder()">🔀 Acak Ulang Urutan</button><div class="order">${q.map((it,i)=>`<div class="or"><span>${i+1}. ${esc(S.names[it.stu])}</span><i style="color:${T[it.team].c}">${T[it.team].e} ${T[it.team].n}</i><span><button class="mini" onclick="mv(${i},-1)">▲</button><button class="mini" onclick="mv(${i},1)">▼</button></span></div>`).join('')}</div>`:''}
+<br><button class="g big" onclick="begin()">🚀 Mulai Babak ${r}</button>${board()}</div>`}
+function play(){const it=cur();if(!it)return'';assignRep();const r=S.r,t=T[it.team],md=mode(),d=ph=='done',n=it.a*it.b;
+ const lb=it.tb?'⚔️ TIE-BREAKER':r==5?`Soal ${Math.floor(S.i/5)+1} dari 3`:r==4?`Putaran ${Math.floor(S.i/5)+1} dari 4`:`Giliran ${S.i+1} dari ${S.Q[r].length}`;
+ const who=r>=4&&ph=='ready'?`<select onchange="setRep(this.value)">${S.teams[it.team].map(s=>`<option value="${s}" ${s==it.stu?'selected':''}>${esc(S.names[s])}</option>`).join('')}</select>`:`<b>${esc(S.names[it.stu])}</b>`;
+ let b='';
+ if(ph=='ready')b=`<div class="q">❓</div><button class="g big" onclick="startQ()">▶ Mulai Soal (${it.time} detik)</button>`;
+ else if(ph=='count')b=`<div class="q cdn" id="cd">${cd}</div>`;
+ else{b=`<div class="q">${it.a} × ${it.b} = ${d?n:'?'}</div>`;
+  if(!d)b+=`<div class="tm"><div id="tb" style="width:${left/(it.time*10)}%"></div></div><div class="tt" id="tt">${Math.ceil(left/1000)}</div>`;
+  if(md=='mc')b+=`<div class="ans">${it.opts.map((o,i)=>`<button class="o${i} ${d?(o==n?'ok':it.res.ans===o?'bad':'dim'):''}" ${d?'disabled':''} onclick="ans(${o})">${o}</button>`).join('')}</div>`;
+  else if(!d)b+=`<div class="num"><input id="ai" type="number" inputmode="numeric" onkeydown="if(event.key=='Enter')sendNum()"><button class="g big" onclick="sendNum()">Kirim ✔</button></div>`;
+  if(d){const ok=it.res.ok;b+=`<div class="res ${ok?'good':'bad'}"><div class="big2">${ok?`🎉 Benar! +${it.pts} poin`:it.res.ans===null?'⏰ Waktu habis':'🤗 Belum tepat'}</div>${it.res.ans!==null&&md=='num'?`<div>Jawaban siswa: ${it.res.ans}</div>`:''}${ok?'':`<div>Jawaban yang benar: <b>${n}</b></div>`}<div class="ex">💡 ${expl(it.a,it.b)}</div><button class="g big" onclick="next()">⏭ Soal Berikutnya</button></div>`}}
+ return`<div class="c"><div class="who" style="--c:${t.c}"><span class="em">${t.e}</span><div><small>${t.n} · Babak ${r} · ${lb}</small>${who}</div><div class="pts">⭐ ${it.pts} poin</div></div>
+<div class="stage">${b}${paused?'<div class="pause">⏸ JEDA</div>':''}${key&&!d?`<div class="key">🔑 ${n}</div>`:''}</div><div class="mas"><span>🦉</span><div>${d?msg:'Siap berhitung? Ayo semangat!'}</div></div>${board()}</div>`}
+function final(){const t=stats().t,m=Math.max(...t.map(x=>x.p)),w=T.map((_,i)=>i).filter(i=>t[i].p==m);
+ return`<div class="c"><div class="trophy">🏆</div><h2>SELAMAT KEPADA JUARA!</h2><h1 style="color:${T[w[0]].c}">${w.map(i=>T[i].e+' '+T[i].n).join(' & ')}</h1><p class="lead">${m} poin${w.length>1?' · juara bersama':''}</p>${board()}<br><button class="b" onclick="ov('rank')">📊 Klasemen</button><button class="s" onclick="csv()">📥 Ekspor CSV</button><button class="r" onclick="reset()">♻ Sesi Baru</button></div>`}
+function drawer(){const p=S.screen=='play';return`<h3>🎛️ Panel Guru</h3>${p&&ph=='run'?`<button class="${paused?'g':'b'}" onclick="pause()">${paused?'▶ Lanjutkan':'⏸ Jeda Waktu'}</button>`:''}${p&&ph!='done'?'<button class="s" onclick="key=!key;render()">🔑 Kunci Jawaban</button>':''}${p&&ph!='count'?'<button class="s" onclick="redo()">🔁 Ulang Soal</button>':''}${p&&ph=='done'?'<button class="s" onclick="fix()">✏️ Koreksi (Benar↔Salah)</button><button class="g" onclick="next()">⏭ Soal Berikutnya</button>':''}
+<button class="s" onclick="S.mode={mc:'num',num:'mix',mix:'mc'}[S.mode];save();render()">🔤 Jawaban: ${{mc:'Pilihan ganda',num:'Ketik angka',mix:'Kombinasi'}[S.mode]}</button><button class="b" onclick="ov('peserta')">👥 Peserta & Urutan</button><button class="b" onclick="csv()">📥 Ekspor CSV</button>${S.locked&&S.screen!='final'?'<button class="r" onclick="finish()">🏁 Akhiri Turnamen</button>':''}<button class="r" onclick="reset()">♻ Sesi Baru / Atur Ulang</button>`}
+function rankV(){const{t,s}=stats();let h=`<h1>📊 Papan Klasemen</h1><button class="${RT=='team'?'b':'s'}" onclick="RT='team';ovr()">Klasemen Tim</button><button class="${RT=='ind'?'b':'s'}" onclick="RT='ind';ovr()">Klasemen Individu</button>`;
+ if(RT=='team'){const o=T.map((_,i)=>i).sort((a,b)=>t[b].p-t[a].p||a-b);
+  h+=`<div class="rkw" style="height:${5*96}px">`+T.map((x,i)=>{const k=o.indexOf(i),z=t[i],pc=z.n?Math.round(z.ok/z.n*100):0,hi=Object.keys(z.h).map(r=>`B${r}: ${z.h[r]}`).join(' · '),pk=LR.indexOf(i);
+   return`<div class="rk${k==0&&z.p>0?' top':''}" data-k="${k}" style="--c:${x.c};top:${(pk<0?k:pk)*96}px"><span class="n">${k+1}</span><span class="em">${x.e}</span><div class="nm"><b>${x.n}${k==0&&z.p>0?' 👑':''}</b><small>✔ ${z.ok} benar · ${z.n} soal · ${pc}% ${hi?'· '+hi:''}</small></div><span class="p">${z.p}</span></div>`}).join('')+'</div>';LR=o}
+ else{const o=S.names.map((_,i)=>i).sort((a,b)=>s[b].p-s[a].p||a-b);h+='<div class="ind">'+o.map((i,k)=>`<div class="ir" style="border-color:${T[teamOf(i)]?.c}"><b>${s[i].p>0?'#'+(k+1)+' ':''}${esc(S.names[i])}</b><span>${T[teamOf(i)]?.e||''} ${s[i].n?(s[i].p>0?'⭐ '+s[i].p+' poin':'💪 Tetap semangat, kesempatan berikutnya masih ada!'):'—'}</span></div>`).join('')+'</div>'}
+ return h}
+function pesV(){let h='<h1>👥 Peserta</h1>'+tgrid();const q=S.Q[S.r];if(S.r&&S.r<4&&q)h+=`<h2>Urutan Giliran — Babak ${S.r}</h2><div class="order" style="max-width:800px">`+q.map((it,i)=>`<div class="or"><span>${i+1}. ${esc(S.names[it.stu])}</span><i>${T[it.team].e} ${T[it.team].n}</i><span>${it.res?(it.res.ok?'✅':'❌'):i==S.i&&S.screen=='play'?'▶':'…'}</span></div>`).join('')+'</div>';return h}
+const helpV=()=>`<h1>❓ Petunjuk Guru</h1><div class="help"><ol><li>Buka <b>index.html</b> di browser (Chrome/Edge/Firefox) dan tampilkan di proyektor. Tidak perlu internet.</li><li>Klik <b>Atur Nama & Tim</b>, tempel 50 nama dari Excel, lalu klik <b>Acak Tim</b> (boleh diulang sebelum mulai).</li><li>Klik <b>Mulai Turnamen</b>. Tim terkunci dan tersimpan otomatis; jika halaman termuat ulang, lanjutkan dengan tombol Lanjutkan.</li><li>Babak 1–3: setiap siswa satu giliran. Di layar pembuka babak Anda bisa mengacak atau menggeser urutan (▲▼).</li><li>Setiap soal: klik <b>Mulai Soal</b> → hitung mundur 3-2-1 → klik pilihan jawaban (atau ketik angka lalu Kirim). Setelah itu klik <b>Soal Berikutnya</b>.</li><li>Babak 4–5: pilih perwakilan tim lewat menu nama sebelum soal dimulai (otomatis diusulkan siswa yang belum/ paling jarang tampil).</li><li>Panel ⚙️: jeda, kunci jawaban, ulang soal, koreksi, ganti mode jawaban, ekspor CSV, akhiri turnamen, sesi baru.</li><li>📊 Klasemen tim tampil kapan saja; klasemen individu hanya terbuka bila tab Individu diklik.</li><li>Jika skor tim seri di akhir Grand Final, soal tie-breaker (5 poin) diberikan hanya kepada tim yang seri.</li></ol></div>`;
+function ovr(){const e=$('#ovc');if(!OV){e.innerHTML='';return}e.innerHTML=`<div class="ovl"><button class="x r" onclick="ov('')">✖ Tutup</button><div class="c">${{rank:rankV,peserta:pesV,help:helpV}[OV]()}</div></div>`;if(OV=='rank')setTimeout(()=>document.querySelectorAll('.rk').forEach(x=>x.style.top=x.dataset.k*96+'px'),40)}
+const ov=n=>{OV=n;ovr()},dr=()=>$('#dr').classList.toggle('o');
+function csv(){const R=[['Babak','No','Tim','Siswa','Soal','Jawaban Siswa','Jawaban Benar','Hasil','Poin']];Object.entries(S.Q).forEach(([r,q])=>q.forEach((it,i)=>{if(it.res)R.push([r,i+1,T[it.team].n,S.names[it.stu]??'',`${it.a} x ${it.b}`,it.res.ans??'',it.a*it.b,it.res.ok?'Benar':'Salah',it.res.ok?it.pts:0])}));
+ const{t,s}=stats();R.push([],['Klasemen Tim','Poin','Soal Benar','Soal Dikerjakan']);T.forEach((x,i)=>R.push([x.n,t[i].p,t[i].ok,t[i].n]));R.push([],['Klasemen Individu','Tim','Poin','Soal Benar','Soal Dikerjakan']);S.names.forEach((n,i)=>R.push([n,T[teamOf(i)]?.n||'',s[i].p,s[i].ok,s[i].n]));
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\uFEFF'+R.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n')],{type:'text/csv'}));a.download='hasil-olimpiade-perkalian.csv';a.click()}
+function render(){$('#app').innerHTML=({home,setup,intro,play,final})[S.screen]();$('#dr').innerHTML=drawer();$('#bm').style.opacity=S.mus?1:.4;$('#bs').style.opacity=S.snd?1:.4;ovr();
+ if(S.screen=='final'&&!cfd){cfd=true;confetti();sfx('win')}else if(S.screen!='final')cfd=false;
+ const i=$('#ai');if(i)i.focus()}
+$('#fl').innerHTML=Array.from({length:16},()=>`<span style="left:${rnd(0,96)}%;animation-delay:-${rnd(0,9)}s">${['⭐','🎉','✖️','🔢','🏆','✨'][rnd(0,5)]}</span>`).join('');
+S.used=S.used||[];if(S.screen=='play'){const it=cur();ph=it&&it.res?'done':'ready';paused=false}
+document.addEventListener('click',()=>{if(S.mus&&!mt)music()},{once:true});
+render();
+</script></body></html>
